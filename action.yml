@@ -5,7 +5,11 @@ runs:
   using: "composite"
   steps:
     - name: Check IP
+      id: ip
+      shell: bash
+      run: echo "::set-output name=ip-address::$(curl -s https://api.ipify.org)"
+
+    - name: Set additional env variables
       shell: bash
       run: |
-          curl https://api.ipify.org
-
+        echo "IP_ADDRESS=${{ steps.ip.outputs.ip-address }}" >> $GITHUB_ENV
